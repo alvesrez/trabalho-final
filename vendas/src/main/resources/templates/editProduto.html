@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Produto</title>
+</head>
+
+<body>
+
+    <h2>Editar Produto</h2>
+
+    <form th:action="@{/produtos/editar}" th:object="${produto}" method="post">
+        <input type="hidden" th:field="*{cod_produto}" />
+
+        <div>
+            <label>Código do Produto:</label>
+            <input type="text" th:field="*{cod_produto}" readonly />
+        </div>
+
+        <div>
+            <label>Descrição do Produto:</label>
+            <input type="text" th:field="*{descricao}" />
+        </div>
+
+        <div>
+            <label>Unidade de Medida:</label>
+            <select th:field="*{unidadeMedida}">
+                <option th:value="null">Selecione a Unidade de medida:</option>
+                <option th:value="UN">Unidade</option>
+                <option th:value="pt">Pacote</option>
+                <option th:value="cd">Cada</option>
+            </select>
+        </div>
+
+        <div>
+            <label>Valor Unitário do Produto:</label>
+            <input type="text" th:field="*{valorUnitario}" />
+        </div>
+
+        <div>
+            <label>Quantidade Comprada:</label>
+            <input type="text" th:field="*{qteComprada}" />
+        </div>
+
+        <div>
+            <label>Razão Social do Fornecedor:</label>
+            <input type="text" th:field="*{nomeFornecedor}" />
+        </div>
+
+        <button type="submit">Salvar Alterações</button>
+    </form>
+
+    <a th:href="@{/produtos}">Voltar para a Lista de Produtos</a>
+
+</body>
+
+</html>

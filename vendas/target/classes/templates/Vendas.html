@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tela de Vendas</title>
+</head>
+
+<body>
+    <form th:object="${venda}" th:action="@{/addvenda}" method="post">
+        <div>
+            <div>
+                <label for="dataVenda">Data da Venda:</label>
+                <input type="date" th:field="*{dataVenda}" id="dataVenda" />
+
+                <label for="cpf">CPF:</label>
+                <input type="text" th:field="*{cpfCliente}" id="cpfCliente" onchange="fetchClienteData('cpf')" placeholder="CPF" />
+                <br>
+                <label for="nome">Nome do Cliente:</label>
+                <input type="text" id="nomeCliente" th:field="*{nomeCliente}" onchange="fetchClienteData('nome')" />
+            </div>
+
+            <label for="produto">Produto:</label>
+            <select th:field="*{cod_prodProduto}">
+                <option th:each="p : ${produtos}" th:value="${p.codProd}" th:text="${p.descricao}" onchange="fetchProdutoData('cod_prod')"></option>
+            </select>
+
+            <label>Descrição do produto:</label>
+            <input type="text" th:field="*{descricao}" id="descricao" placeholder="Descrição do produto"  onchange="fetchProdutoData('cod_prod')"/>
+        </div>
+
+        <div>
+            <label for="qteVendida">Quantidade vendida</label>
+            <input type="number" th:field="*{qteVendida}" id="quantidade" placeholder="Quantidade" readonly
+                oninput="calculateTotal()" />
+        </div>
+
+        <div>
+            <label for="precoVenda">Preço de venda:</label>
+            <input type="number" th:field="*{precoVenda}" id="precoVenda" placeholder="Digite o valor do produto" readonly
+                oninput="calculateTotal()" />
+        </div>
+
+        <div>
+            <label>Valor total:</label>
+            <input type="text" id="valorTotal" th:field="*{valorTotal}" />
+        </div>
+
+        <input type="submit" value="Registrar venda">
+    </form>
+
+    <script>
+        function calculateTotal() {
+            var quantity = document.getElementById('quantidade').value;
+            var price = document.getElementById('precoVenda').value;
+            var total = quantity * price;
+            document.getElementById('valorTotal').value = total;
+        }
+
+        function fetchClienteData(field) {
+    var value = document.getElementById(field).value;
+    var url = '/api/cliente?field=' + field + '&value=' + value;
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('cpf').value = data.cpf;
+            document.getElementById('nome').value = data.nome;
+        });
+}
+
+function fetchProdutoData(field) {
+    var value = document.getElementById(field).value;
+    var url = '/api/produto?field=' + field + '&value=' + value;
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('cod_prod').value = data.cod_prod;
+            document.getElementById('descricaoProduto').value = data.descricaoProduto;
+        });
+}
+    </script>
+</body>
+
+</html>

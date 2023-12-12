@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clientes</title>
+</head>
+
+<body>
+
+
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-sm table-striped table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th>Código do Cliente</th>
+                        <th>Nome</th>
+                        <th>CPF</th>
+                        <th>Data de Nascimento</th>
+                        <th>Sexo</th>
+                        <th>Cidade</th>
+                        <th>UF</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="cliente : ${clientes}">
+                        <td th:text="${cliente.cod_cliente}"></td>
+                        <td th:text="${cliente.nome}"></td>
+                        <td th:text="${cliente.cpf}"></td>
+                        <td th:text="${cliente.dataDeNascimento}"></td>
+                        <td th:text="${cliente.sexo}"></td>
+                        <td th:text="${cliente.cidade}"></td>
+                        <td th:text="${cliente.uf}"></td>
+                        <td>
+                            <div class="btn-group pull-right">
+                                <a class="btn btn-sm btn-primary" th:href="@{/edit/{id}(id=${cliente.cod_cliente})}">Editar</a>
+                                <a class="delete btn btn-sm btn-danger" th:href="@{/delete/{id}(id=${cliente.cod_cliente})}">Excluir</a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

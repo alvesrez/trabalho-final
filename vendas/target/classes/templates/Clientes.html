@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form class="form-horizontal" th:object="${cliente}" th:action="@{/addcliente}" method="POST" style="margin: 10px">
+      
+        <div>
+            <label for="nome">Nome do Cliente:</label>
+            <input type="text" th:field="*{nome}" id="nome" placeholder="Nome">
+            <label for="dataDeNascimento">Data de Nascimento:</label>
+            <input type="date" th:field="*{dataDeNascimento}" id="dataDeNascimento" placeholder="Data de Nascimento" />
+
+        </div>
+        <div>
+            <label for="sexo">Sexo:</label>
+            <select th:field="*{sexo}" id="sexo" placeholder="Sexo">
+                <option value="M">Masculino</option>
+                <option value="F">Feminino</option>
+            </select>
+            <label for="cpf">CPF:</label>
+            <input type="text" th:field="*{cpf}" id="cpf" placeholder="CPF">
+            <label for="cidade">Cidade:</label>
+            <input type="text" th:field="*{cidade}" id="cidade" placeholder="cidade">
+            <label for="estados">Estados:</label>
+            <select id="uf" name="estados" th:field="*{uf}">
+                <option th:value="null" selected>Selecione a UF:</option>
+                <option th:value="AC">Acre</option>
+                <option th:value="AL">Alagoas</option>
+                <option th:value="AP">Amapá</option>
+                <option th:value="AM">Amazonas</option>
+                <option th:value="BA">Bahia</option>
+                <option th:value="CE">Ceará</option>
+                <option th:value="DF">Distrito Federal</option>
+                <option th:value="ES">Espírito Santo</option>
+                <option th:value="GO">Goiás</option>
+                <option th:value="MA">Maranhão</option>
+                <option th:value="MT">Mato Grosso</option>
+                <option th:value="MS">Mato Grosso do Sul</option>
+                <option th:value="MG">Minas Gerais</option>
+                <option th:value="PA">Pará</option>
+                <option th:value="PB">Paraíba</option>
+                <option th:value="PR">Paraná</option>
+                <option th:value="PE">Pernambuco</option>
+                <option th:value="PI">Piauí</option>
+                <option th:value="RJ">Rio de Janeiro</option>
+                <option th:value="RN">Rio Grande do Norte</option>
+                <option th:value="RS">Rio Grande do Sul</option>
+                <option th:value="RO">Rondônia</option>
+                <option th:value="RR">Roraima</option>
+                <option th:value="SC">Santa Catarina</option>
+                <option th:value="SP">São Paulo</option>
+                <option th:value="SE">Sergipe</option>
+                <option th:value="TO">Tocantins</option>
+            </select>
+        </div>
+        <br>
+        <input type="submit" value="Cadastrar Cliente">
+    </form>
+
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-sm table-striped table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th>Código do Cliente</th>
+                        <th>Nome</th>
+                        <th>CPF</th>
+                        <th>Data de Nascimento</th>
+                        <th>Sexo</th>
+                        <th>Cidade</th>
+                        <th>UF</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="cliente : ${clientes}">
+                        <td th:text="${cliente.cod_cliente + 1}"></td>
+                        <td th:text="${cliente.nome}"></td>
+                        <td th:text="${cliente.cpf}"></td>
+                        <td th:text="${cliente.dataDeNascimento}"></td>
+                        <td th:text="${cliente.sexo}"></td>
+                        <td th:text="${cliente.cidade}"></td>
+                        <td th:text="${cliente.uf}"></td>
+                        <td>
+                            <div class="btn-group pull-right">
+                                <a class="btn btn-sm btn-primary"
+                                    th:href="@{/edit/{cpf}(cpf=${cliente.cpf})}">Editar</a>
+
+                                <a class="delete btn btn-sm btn-danger"
+                                    th:href="@{/delete(cpf=${cliente.cpf})}">Excluir</a>
+
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

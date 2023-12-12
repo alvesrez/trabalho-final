@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <form th:action="@{/addproduto}" method="POST" th:object="${produto}">
+
+        <div>
+            <label>Código do Produto</label>
+            <input type="number" th:field="*{cod_prod}" id="cod_produto" placeholder="Codigo do Produto" />
+        </div>
+
+        <div>
+            <label>Descrição do produto:</label>
+            <input type="text" th:field="*{descricao}" id="descricao" placeholder="Descrição do produto" />
+        </div>
+
+        <div>
+            <label>Valor Unitário do Produto:</label>
+            <input type="number" th:field="*{valorUnitario}" id="valorUnitario"
+                placeholder="Digite o valor do produto" />
+        </div>
+
+        <div>
+            <label for="unidadeMedida">Unidade de Medida:</label>
+            <select id="unidadeMedida" name="unidadeMedida" th:field="*{unidadeMedida}">
+                <option th:value="null" selected>Selecione a Unidade de medida:</option>
+                <option th:value="UN">Unidade</option>
+                <option th:value="pt">Pacote</option>
+                <option th:value="cd">Cada</option>
+            </select>
+        </div>
+
+        <div>
+            <label>Quantidade Comprada</label>
+            <input type="number" th:field="*{qteComprada}" id="qteComprada" placeholder="Quantidade Comprada" />
+        </div>
+
+        <div>
+            <label>Razão Social do Fornecedor:</label>
+            <input type="text" th:field="*{nomeFornecedor}" id="nomeFornecedor"
+                placeholder="Razão Social do Fornecedor" />
+        </div>
+
+        <input type="hidden" th:field="*{cod_prod}" id="cod_produto" name="cod_produto" value="" />
+
+        <input type="submit" value="Cadastrar Produto">
+
+        <div class="layout_listaProduto">
+            <div class="lista">
+                <table class="table table-sm table-striped table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Código do Produto</th>
+                            <th>Descrição do produto</th>
+                            <th>Valor Unitário do Produto</th>
+                            <th>Unidade de Medida</th>
+                            <th>Quantidade Comprada</th>
+                            <th>Razão Social do Fornecedor</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="produto : ${produtos}">
+                            <td th:text="${produto.cod_prod}"></td>
+                            <td th:text="${produto.descricao}"></td>
+                            <td th:text="${produto.valorUnitario}"></td>
+                            <td th:text="${produto.unidadeMedida}"></td>
+                            <td th:text="${produto.qteComprada}"></td>
+                            <td th:text="${produto.nomeFornecedor}"></td>
+
+                            <td>
+                                <div>
+                                    <div>
+                                        <a
+                                            th:href="@{/produtos/edit/{cod_produto}(cod_produto=${produto.cod_prod})}">Editar</a>
+                                        <a
+                                            th:href="@{/produtos/delete/{cod_produto}(cod_produto=${produto.cod_prod})}">Excluir</a>
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+
+
+    </form>
+
+</body>
+
+</html>
