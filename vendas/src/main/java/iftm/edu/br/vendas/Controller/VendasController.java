@@ -1,6 +1,9 @@
 package iftm.edu.br.vendas.Controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,8 +15,6 @@ public class VendasController {
 
     @Autowired
     private VendasDao vendasDao;
-
-    
 
     @RequestMapping("/vendas")
     public String getVendas(Model model) {
@@ -54,4 +55,49 @@ public class VendasController {
         model.addAttribute("edit", true);
         return "Vendas";
     }
+
+    @GetMapping("/vendasByProduto")
+    public String getVendasByProduto(@RequestParam(value = "codProd", required = true) Long codProd,
+            @RequestParam(value = "descricaoProduto", required = true) String descricaoProduto,
+            Model model) {
+        List<Vendas> vendasByProduto = vendasDao.getVendasByProduto(codProd, descricaoProduto);
+        model.addAttribute("vendasList", vendasByProduto);
+
+        // Mantenha o nome da página para exibição dos resultados
+        return "Vendas";
+    }
+
+    @GetMapping("/vendasByCliente")
+    public String getVendasByCliente(@RequestParam(value = "cpfCliente", required = true) String cpfCliente,
+            @RequestParam(value = "nomeCliente", required = true) String nomeCliente,
+            Model model) {
+        List<Vendas> vendasByCliente = vendasDao.getVendasByCliente(cpfCliente, nomeCliente);
+        model.addAttribute("vendasList", vendasByCliente);
+
+        // Mantenha o nome da página para exibição dos resultados
+        return "Vendas";
+    }
+
+    @ModelAttribute("allCpfs")
+    public List<String> getAllCpfs() {
+        // Use o seu VendasDao para buscar todos os CPFs do banco de dados
+        return vendasDao.getAllCpfs();
+    }
+
+    @ModelAttribute("allCodProdutos")
+    public List<Long> getAllCodProdutos() {
+        return vendasDao.getAllCodProdutos();
+    }
+
+    @GetMapping("/getClienteByCpf")
+@ResponseBody
+public ResponseEntity<?> getClienteByCpf(@RequestParam("cpfCliente") String cpfCliente) {
+    Vendas venda = vendasDao.getVendaByCpf(cpfCliente);
+    if (venda != null) {
+        return ResponseEntity.ok(venda);
+    } else {
+        return ResponseEntity.notFound().build();
+    }
+}
+
 }

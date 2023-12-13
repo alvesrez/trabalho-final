@@ -14,20 +14,29 @@
                 <label for="dataVenda">Data da Venda:</label>
                 <input type="date" th:field="*{dataVenda}" id="dataVenda" />
 
-                <label for="cpf">CPF:</label>
-                <input type="text" th:field="*{cpfCliente}" id="cpfCliente" onchange="fetchClienteData('cpf')" placeholder="CPF" />
+                <label for="cpfCliente">CPF:</label>
+                <select th:field="*{cpfCliente}" id="cpfCliente" onchange="fetchClienteData()">
+                    <option th:each="cpf : ${allCpfs}" th:value="${cpf}" th:text="${cpf}"></option>
+                </select>
+
                 <br>
-                <label for="nome">Nome do Cliente:</label>
-                <input type="text" id="nomeCliente" th:field="*{nomeCliente}" onchange="fetchClienteData('nome')" />
+
+                <label for="nomeCliente">Nome do Cliente:</label>
+                <input type="text" id="nomeCliente" th:field="*{nomeCliente}" readonly />
+
             </div>
 
             <label for="produto">Produto:</label>
-            <select th:field="*{cod_prodProduto}">
-                <option th:each="p : ${produtos}" th:value="${p.codProd}" th:text="${p.descricao}" onchange="fetchProdutoData('cod_prod')"></option>
+            <select th:field="*{cod_prodProduto}" id="cod_prodProduto" onchange="fetchProdutoData('cod_prod')"
+                placeholder="Código do Produto">
+                <option th:each="codProd : ${allCodProdutos}" th:value="${codProd}" th:text="${codProd}"></option>
             </select>
 
+
+
             <label>Descrição do produto:</label>
-            <input type="text" th:field="*{descricao}" id="descricao" placeholder="Descrição do produto"  onchange="fetchProdutoData('cod_prod')"/>
+            <input type="text" th:field="*{descricao}" id="descricao" placeholder="Descrição do produto"
+                onchange="fetchProdutoData('cod_prod')" />
         </div>
 
         <div>
@@ -38,8 +47,8 @@
 
         <div>
             <label for="precoVenda">Preço de venda:</label>
-            <input type="number" th:field="*{precoVenda}" id="precoVenda" placeholder="Digite o valor do produto" readonly
-                oninput="calculateTotal()" />
+            <input type="number" th:field="*{precoVenda}" id="precoVenda" placeholder="Digite o valor do produto"
+                readonly oninput="calculateTotal()" />
         </div>
 
         <div>
@@ -58,28 +67,46 @@
             document.getElementById('valorTotal').value = total;
         }
 
-        function fetchClienteData(field) {
-    var value = document.getElementById(field).value;
-    var url = '/api/cliente?field=' + field + '&value=' + value;
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('cpf').value = data.cpf;
-            document.getElementById('nome').value = data.nome;
-        });
-}
+        function fetchClienteData() {
+            var cpfCliente = document.getElementById('cpfCliente').value;
+            var url = '/getClienteByCpf?cpfCliente=' + cpfCliente;
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro ao buscar dados do cliente');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Verifique se os dados estão corretos
+                    console.log(data);
+                    // Atualize os campos do formulário com os dados do cliente
+                    document.getElementById('nomeCliente').value = data.nomeCliente;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
 
-function fetchProdutoData(field) {
-    var value = document.getElementById(field).value;
-    var url = '/api/produto?field=' + field + '&value=' + value;
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('cod_prod').value = data.cod_prod;
-            document.getElementById('descricaoProduto').value = data.descricaoProduto;
-        });
-}
+
+
+        function fetchProdutoData(field) {
+            var value = document.getElementById(field).value;
+            var url = '/api/produto?field=' + field + '&value=' + value;
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.descricao) {
+                        // Atualiza a descrição do produto no campo correspondente
+                        document.getElementById('descricao').value = data.descricao;
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
     </script>
+
 </body>
 
 </html>

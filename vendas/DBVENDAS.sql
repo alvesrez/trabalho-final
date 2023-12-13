@@ -2,9 +2,8 @@ create database dbVendas;
 
 	use dbVendas;
     
-
 CREATE TABLE Cliente (
-    cod_cliente INT PRIMARY KEY,
+    cod_cliente INT AUTO_INCREMENT PRIMARY KEY,
     CPF VARCHAR(11),
     nome VARCHAR(60),
     dataDeNascimento DATE,
@@ -14,7 +13,7 @@ CREATE TABLE Cliente (
 );
 
 CREATE TABLE produto (
-    cod_prod INT PRIMARY KEY,
+    cod_prod INT AUTO_INCREMENT PRIMARY KEY,
     descricao VARCHAR(60),
     unidadeMedida VARCHAR(2),
     valorUnitario DECIMAL(10, 2),
@@ -24,7 +23,7 @@ CREATE TABLE produto (
 
 
 CREATE TABLE Vendas (
-    codVenda INT PRIMARY KEY,
+    codVenda INT AUTO_INCREMENT PRIMARY KEY,
     dataVenda DATE,
     ValorTotal DECIMAL(10, 2),
     Cliente_cod_cliente INT,

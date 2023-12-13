@@ -28,13 +28,14 @@ public class ClientesDao {
 
     public void inserirCliente(Clientes cliente) {
         Clientes clienteExistente = getCliente(cliente.getCpf());
-
+    
         if (clienteExistente == null) {
             // Se o cliente não existir, insira um novo registro
             db.update(
                 "INSERT INTO Cliente(nome, cpf, dataDeNascimento, sexo, cidade, uf) VALUES (?, ?, ?, ?, ?, ?)",
                 cliente.getNome(), cliente.getCpf(), cliente.getDataDeNascimento(),
                 cliente.getSexo(), cliente.getCidade(), cliente.getUf());
+    
         } else {
             // Se o cliente já existir, atualize o registro existente
             db.update("UPDATE Cliente SET nome=?, dataDeNascimento=?, sexo=?, cidade=?, uf=? WHERE cpf=?",

@@ -1,5 +1,6 @@
 package iftm.edu.br.vendas.Domain;
 
+
 public class Vendas {
 
     private Long codVenda;

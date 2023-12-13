@@ -7,7 +7,7 @@ import lombok.Data;
 
 public class Clientes {
 
-    private long cod_cliente;
+    private Long cod_cliente;
     private String nome;
     private String cpf;
     private String dataDeNascimento;
@@ -31,6 +31,9 @@ public class Clientes {
 
     public Clientes findByCpf(String cpf2) {
         return null;
+    }
+
+    public void setNomeCliente(String string) {
     }
 
 }
